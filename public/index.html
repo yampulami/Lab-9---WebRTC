@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AuraMeet — Premium Video Meetings</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+
+  <!-- Ambient background glows -->
+  <div class="bg-glow bg-glow--1" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--2" aria-hidden="true"></div>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar" role="navigation">
+    <div class="nav-brand">
+      <svg class="brand-diamond" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 2L22 12L12 22L2 12Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M12 7L17 12L12 17L7 12Z" fill="currentColor" opacity="0.5"/>
+      </svg>
+      <span class="brand-name">AuraMeet</span>
+    </div>
+    <span class="nav-tag">Beta</span>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <main class="hero">
+    <div class="hero-inner">
+
+      <div class="hero-badge">
+        <span class="badge-pulse" aria-hidden="true"></span>
+        No account required &nbsp;·&nbsp; Instant meetings
+      </div>
+
+      <h1 class="hero-title">
+        Meetings that<br />
+        <span class="hero-title--gold">feel different.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Crystal-clear P2P video. Zero clutter. Built for people&nbsp;who&nbsp;value&nbsp;their&nbsp;time.
+      </p>
+
+      <!-- ── Actions card ── -->
+      <div class="actions-card">
+
+        <!-- New meeting -->
+        <button class="btn btn--primary btn--full" id="newMeetingBtn" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="16"/>
+            <line x1="8" y1="12" x2="16" y2="12"/>
+          </svg>
+          New Meeting
+        </button>
+
+        <div class="divider">
+          <span>or join with an ID</span>
+        </div>
+
+        <!-- Join meeting -->
+        <div class="input-row">
+          <input
+            id="meetingIdInput"
+            class="text-input"
+            type="text"
+            placeholder="Enter meeting ID  (e.g. abc-123-xyz)"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button class="btn btn--secondary" id="joinMeetingBtn" type="button">
+            Join
+          </button>
+        </div>
+
+        <p class="input-error" id="inputError" role="alert" aria-live="polite"></p>
+      </div>
+
+      <!-- ── Feature pills ── -->
+      <ul class="features" aria-label="Product highlights">
+        <li class="feature-pill">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+          HD Video
+        </li>
+        <li class="feature-pill">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+          No sign-in
+        </li>
+        <li class="feature-pill">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+          Instant invite links
+        </li>
+        <li class="feature-pill">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/></svg>
+          P2P encrypted
+        </li>
+      </ul>
+
+    </div>
+  </main>
+
+  <script src="/js/home.js"></script>
+</body>
+</html>

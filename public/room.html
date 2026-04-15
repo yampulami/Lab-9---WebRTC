@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AuraMeet — Meeting Room</title>
+  <link rel="stylesheet" href="/css/room.css" />
+</head>
+<body>
+
+  <!-- ── Top bar ── -->
+  <header class="topbar">
+    <a href="/" class="topbar__brand" title="Return to home">
+      <svg class="brand-diamond" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 2L22 12L12 22L2 12Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M12 7L17 12L12 17L7 12Z" fill="currentColor" opacity="0.5"/>
+      </svg>
+      <span class="brand-name">AuraMeet</span>
+    </a>
+
+    <div class="topbar__room-pill">
+      <span class="room-pill__label">ID</span>
+      <span class="room-pill__id" id="displayRoomId">—</span>
+      <button class="room-pill__copy" id="copyInviteBtn" type="button">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        </svg>
+        <span id="copyBtnText">Copy link</span>
+      </button>
+    </div>
+
+    <div class="topbar__right">
+      <span class="live-dot" aria-hidden="true"></span>
+      <span class="participant-count" id="participantCount">1 participant</span>
+      <span class="meeting-timer" id="meetingTimer">00:00</span>
+    </div>
+  </header>
+
+  <!-- ── Permission denied overlay ── -->
+  <div class="overlay" id="permissionOverlay" hidden aria-modal="true" role="dialog" aria-labelledby="permTitle">
+    <div class="overlay-card">
+      <div class="overlay-icon overlay-icon--warn">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
+      <h2 id="permTitle">Camera &amp; Microphone Required</h2>
+      <p>AuraMeet needs access to your camera and microphone to join this meeting. Please allow access in your browser settings and try again.</p>
+      <button class="btn btn--primary" onclick="window.location.reload()" type="button">Try Again</button>
+      <a href="/" class="btn btn--ghost">Return Home</a>
+    </div>
+  </div>
+
+  <!-- ── Loading overlay ── -->
+  <div class="overlay" id="loadingOverlay" aria-label="Joining meeting…" role="status">
+    <div class="overlay-card overlay-card--loading">
+      <div class="spinner"></div>
+      <p>Joining meeting…</p>
+    </div>
+  </div>
+
+  <!-- ── Video grid ── -->
+  <main class="video-grid" id="videoGrid" data-count="0"></main>
+
+  <!-- ── Toast ── -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- ── Control bar ── -->
+  <footer class="controls">
+    <div class="controls__bar">
+
+      <!-- Mic -->
+      <button class="ctrl-btn" id="toggleMicBtn" data-active="true" type="button" aria-label="Toggle microphone">
+        <span class="ctrl-icon" id="micIcon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+            <line x1="8" y1="23" x2="16" y2="23"/>
+          </svg>
+        </span>
+        <span class="ctrl-label" id="micLabel">Mute</span>
+      </button>
+
+      <!-- Camera -->
+      <button class="ctrl-btn" id="toggleCamBtn" data-active="true" type="button" aria-label="Toggle camera">
+        <span class="ctrl-icon" id="camIcon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="23 7 16 12 23 17 23 7"/>
+            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+          </svg>
+        </span>
+        <span class="ctrl-label" id="camLabel">Stop Video</span>
+      </button>
+
+      <!-- Invite -->
+      <button class="ctrl-btn ctrl-btn--invite" id="ctrlCopyBtn" type="button" aria-label="Copy invite link">
+        <span class="ctrl-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+        </span>
+        <span class="ctrl-label">Invite</span>
+      </button>
+
+      <!-- Leave -->
+      <button class="ctrl-btn ctrl-btn--leave" id="leaveBtn" type="button" aria-label="Leave meeting">
+        <span class="ctrl-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+        </span>
+        <span class="ctrl-label">Leave</span>
+      </button>
+
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/room.js"></script>
+</body>
+</html>
